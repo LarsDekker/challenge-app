@@ -1,0 +1,48 @@
+{% extends "challenge/layout.html" %}
+
+{% block content %}
+<div class="text-center">
+    <div class="form-signin">
+
+        {% if form.errors %}
+        <p>Something went wrong. Please try again.</p>
+        {% endif %}
+
+        {% if next %}
+        {% if user.is_authenticated %}
+        <p>Your account doesn't have access to this page. To proceed,
+            please login with an account that has access.</p>
+        {% else %}
+        <p>Please login to see this page.</p>
+        {% endif %}
+        {% endif %}
+
+        <form method="post" action="{% url 'register' %}">
+            {% csrf_token %}
+
+            <label for="username" class="sr-only">{{ form.username.label_tag }}</label>
+            <input type="text" name="username" id="username" class="form-control" placeholder="Email" required=""
+                    {% if not request.GET.email %}autofocus=""{% endif %} value="{{ request.GET.email }}">
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required="" {% if request.GET.email %}autofocus=""{% endif %}>
+            <label for="inputPassword" class="sr-only">Confirm password</label>
+            <input type="password" name="secondPassword" id="secondPassword" class="form-control" placeholder="Password" required="" {% if request.GET.email %}autofocus=""{% endif %}>
+<!--            <div class="checkbox mb-3">-->
+<!--                <label>-->
+<!--                    <input type="checkbox" value="remember-me"> Remember me-->
+<!--                </label>-->
+<!--            </div>-->
+            <button class="btn btn-lg btn-success btn-block" type="submit">Sign in</button>
+            {% if request.GET.code %}
+            <input type="hidden" name="code" value="{{ request.GET.code}}">
+            {% endif %}
+            <input type="hidden" name="next" value="{{ next }}">
+        </form>
+
+        {# Assumes you setup the password_reset view in your URLconf #}
+        <p class="mt-3"><a href="{% url 'password_reset' %}" class="text-dark text-small"><small>Lost password?</small></a>
+        </p>
+    </div>
+
+</div>
+{% endblock %}

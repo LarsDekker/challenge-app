@@ -1,0 +1,41 @@
+{% extends "challenge/layout.html" %}
+{% block content %}
+<div class="row px-xs-3 px-lg-0 d-flex h-100">
+    <div class="w-100 my-auto p-5">
+        <div class="border border-dark rounded py-2 px-2 px-md-5">
+            <div class="row d-flex align-items-end">
+                <div class="col-4">
+                    <h3>{{ match.challenger.user.username }} {% if match.challenger_wins %}<i class="fas fa-trophy ml-5"></i>{% endif %}</h3>
+                </div>
+                <div class="col-4 text-center">
+                    <small>vs</small>
+                </div>
+                <div class="col-4 text-right">
+                    <h3>{% if not match.challenger_wins %}<i class="fas fa-trophy mr-5"></i>{% endif %} {{ match.opponent.user.username }}</h3>
+                </div>
+            </div>
+            <div class="row d-flex align-items-start">
+                <div class="col-4">
+                    <p>{{ ch_score }}</p>
+                </div>
+                <div class="col-4 text-center">
+                    <p>{{ match.date }}</p>
+                </div>
+                <div class="col-4 text-right">
+                    <p>{{ op_score }}</p>
+                </div>
+            </div>
+
+        </div>
+        {% if not match.played_at %}
+        <div style="height: 200px" class="text-center">
+            {% if request.user == match.challenger.user or request.user == match.opponent.user %}
+            <a href="/match/{{match.id}}/submit" class="btn btn-success mt-4">
+                Submit match
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

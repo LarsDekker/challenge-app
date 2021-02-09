@@ -1,0 +1,27 @@
+{% extends "challenge/layout.html" %}
+
+{% block content %}
+<div class="text-center">
+    <div class="form-signin">
+
+
+
+        <form method="POST" action="{% url 'join-group' %}">
+            {% csrf_token %}
+
+            <label for="username" class="sr-only">{{ form.username.label_tag }}</label>
+            <input type="text" name="email" id="username" class="form-control" placeholder="Email" required=""
+                   autofocus="">
+<!--            <div class="checkbox mb-3">-->
+<!--                <label>-->
+<!--                    <input type="checkbox" value="remember-me"> Remember me-->
+<!--                </label>-->
+<!--            </div>-->
+            <button class="btn btn-success btn-block mt-2" type="submit">Join group!</button>
+            <input type="hidden" name="code" value="{{ request.GET.code }}">
+        </form>
+        </p>
+    </div>
+
+</div>
+{% endblock %}

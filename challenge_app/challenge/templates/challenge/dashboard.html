@@ -1,0 +1,112 @@
+{% extends "challenge/layout.html" %}
+{% block content %}
+<div class="row mt-4 px-xs-3 px-lg-0">
+    <div class="col-lg-7">
+        <h4>Tussenstand:</h4>
+        <canvas id="tennishun-chart"></canvas>
+    </div>
+    <div class="col-lg-5 pl-lg-5">
+        <a class="btn btn-success mb-4 text-center text-white w-100" href="{% url 'challenge-match' %}">Daag een
+            deelnemer uit!</a>
+        <div class="list-group list-group-flush border rounded mt-lg-0 mb-4">
+            <div class="list-group-item-action d-flex justify-content-between lh-condensed rounded pt-3 px-3">
+                <strong>Planned</strong>
+            </div>
+            {% for match in planned %}
+            {% include "challenge/match.block.html" %}
+            {% endfor %}
+        </div>
+
+        <div class="list-group list-group-flush border rounded mt-lg-0 mt-4">
+            <div class="list-group-item-action d-flex justify-content-between lh-condensed rounded pt-3 px-3">
+                <strong>Played</strong>
+            </div>
+            {% for match in matches %}
+            {% include "challenge/match.block.html" %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<div style="font-family: 'FontAwesome'; opacity: 0; height: 0; width: 0">.</div>
+{% endblock content %}
+{% block script %}
+<script>
+    $(document).ready(() => {
+        $.get({url: '/score'}).done((response) => {
+            console.log((response))
+            var ctx = document.getElementById("tennishun-chart").getContext('2d');
+            var score_values = []
+            for (var s in response.score) {
+                score_values.push([s, response.score[s]])
+            }
+            score_values.sort((a, b) => {
+                return b[1] - a[1]
+            })
+            console.log(score_values.map(s => s[0]))
+
+            Chart.scaleService.updateScaleDefaults('linear', {
+                ticks: {
+                    min: 0
+                }
+            });
+            var chart = new Chart(ctx, {
+                type: 'horizontalBar',
+                options: {
+                    scales: {
+                        xAxes: {
+                            min: 0
+
+                        }
+                    },
+                    legend: {
+                        display: false,
+                    },
+                    layout: {
+                        padding: 24
+                    },
+                    plugins: {
+                        datalabels: {
+                            align: 'right',
+                            anchor: 'end',
+                            color: "#cc55aa",
+                            font: {
+                                family: 'FontAwesome',
+                                size: 20
+                            },
+                            formatter: function (value, context) {
+                                console.log(context.dataset.icons)
+                                return context.dataset.icons[context.dataIndex];
+                            }
+                        }
+                    }
+                },
+                data: {
+                    labels: score_values.map(s => response.player[s[0]]),
+                    datasets: [{
+                        label: 'Dataset',
+                        backgroundColor: '#046307',
+                        borderColor: '#046307',
+                        data: score_values.map(s => s[1]),
+                        icons: ['\uf0c3', '\uf0e7', '\uf2dc', '\uf0e7', '\uf2dc', '\uf0e7'],
+                        backgroundColor: (context) => {
+                            switch (context.dataIndex) {
+                                case 0:
+                                    return '#FFD700'
+                                case 1:
+                                    return '#c0c0c0'
+                                case 2:
+                                    return '#cd7f32'
+                                default:
+                                    return 'green'
+                            }
+                        },
+                    }],
+
+                },
+            });
+        })
+
+    })
+</script>
+
+{% endblock script %}

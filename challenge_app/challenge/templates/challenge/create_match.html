@@ -1,0 +1,23 @@
+{% extends "challenge/layout.html" %}
+{% block content %}
+<div class="row mt-4 px-3 px-lg-0">
+    <form class="form" method="POST" action="/challenge">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="opponent">Opponent</label>
+            <select name="opponent" id="opponent" class="form-control">
+                <option disabled selected>Select an opponent...</option>
+                {% for o in opponents %}
+                <option value="{{ o.id }}">{{ o.username }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="datetime">Datum</label>
+            <input id="datetime" type="datetime-local" name="datetime" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-success">Uitnodigen</button>
+    </form>
+</div>
+
+{% endblock content %}

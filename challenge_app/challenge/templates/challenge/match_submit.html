@@ -1,0 +1,52 @@
+{% extends "challenge/layout.html" %}
+{% block content %}
+<div class="row px-xs-3 px-lg-0 d-flex h-100">
+    <div class="w-100 my-auto p-5">
+        <form action="/match/{{match.id}}/submit" method="POST">
+            {% csrf_token %}
+            <div class="py-2 px-2 px-md-5">
+                <div class="text-center mb-3">
+                    <h3>Select winner:</h3>
+                </div>
+                <div class="row d-flex align-items-end">
+                    <div id="challenger_box" class="btn btn-secondary col-6">
+                        <div class="border border-dark rounded p-4 h-50 text-center">
+                            <h3>{{ match.challenger.user.username }}</h3>
+                            <p class="mt-4"><input id="challenge_input" class="form-check-input m-0" type="radio" name="winner" id="challengerWins"
+                                   value="challenger" checked>
+                            </p>
+                        </div>
+                    </div>
+                    <div id="opponent_box" class="btn btn-secondary col-6 text-right">
+                        <div class="border border-dark rounded p-4 h-50 text-center">
+                            <h3>{{ match.opponent.user.username }}</h3>
+                            <p class="mt-4"><input id="opponent_input" class="form-check-input m-0" type="radio" name="winner" id="opponentWins"
+                                   value="opponent"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="height: 200px" class="text-center">
+                {% if request.user == match.challenger.user or request.user == match.opponent.user %}
+                <button type="submit" class="btn btn-success mt-4">
+                    Submit match
+                </button>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+    $(document).ready(() => {
+        $("#challenger_box").click(() => {
+            $("#challenge_input").prop('checked', true);
+        });
+        $("#opponent_box").click(() => {
+            $("#opponent_input").prop('checked', true);
+        })
+    })
+</script>
+{% endblock script %}
