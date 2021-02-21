@@ -25,7 +25,7 @@ secrets = json.load(open(BASE_DIR / 'secrets.json', 'r'))
 SECRET_KEY = secrets['application_key']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = secrets['debug']
 
 ALLOWED_HOSTS = ['localhost', '167.99.212.6', 'tennishun.eskvattila.nl', 'challenger.dekker.work']
 
