@@ -81,7 +81,12 @@
                     }
                 },
                 data: {
-                    labels: score_values.map(s => response.player[s[0]]),
+                    labels: score_values.map(s => {
+                        if (score_values[score_values.length-1] === s) {
+                            return 'De grote verliezer: \n' + response.player[s[0]];
+                        }
+                        return response.player[s[0]];
+                    }),
                     datasets: [{
                         label: 'Dataset',
                         backgroundColor: '#046307',
