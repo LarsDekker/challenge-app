@@ -1,11 +1,14 @@
 {% extends "challenge/layout.html" %}
 
 {% block content %}
-<div class="text-center">
-    <div class="form-signin">
+<div class="row justify-content-center p-3">
+    <div class="px-4">
+        <img src="https://tennishun.eskvattila.nl/media/actiefoto.jpg" style="max-width: 400px;">
+    </div>
+    <div class="align-self-center mt-4">
 
 
-
+        <h3>Join de tennishun competitie!</h3>
         <form method="POST" action="{% url 'join-group' %}">
             {% csrf_token %}
 
