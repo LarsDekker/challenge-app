@@ -54,6 +54,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'challenge_app.urls'
+LOGOUT_REDIRECT_URL = '/login'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login'
 
@@ -87,6 +88,14 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# Email
+EMAIL_HOST = "smtp.sendgrid.net"
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = secrets['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = secrets['EMAIL_HOST_PASSWORD']
+DEFAULT_FROM_EMAIL = "lars_dekker@live.nl"
 
 
 # Password validation

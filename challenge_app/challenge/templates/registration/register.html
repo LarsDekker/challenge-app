@@ -2,8 +2,8 @@
 
 {% block content %}
 <div class="text-center">
-    <div class="form-signin">
-
+    <div class="" style="max-width: 350px; margin: auto; margin-top: 30px;">
+        <h2>Register</h2>
         {% if form.errors %}
         <p>Something went wrong. Please try again.</p>
         {% endif %}
@@ -17,22 +17,27 @@
         {% endif %}
         {% endif %}
 
-        <form method="post" action="{% url 'register' %}">
+        <form method="post" action="{% url 'register' %}?{{request.META.QUERY_STRING}}">
             {% csrf_token %}
 
-            <label for="username" class="sr-only">{{ form.username.label_tag }}</label>
-            <input type="text" name="username" id="username" class="form-control" placeholder="Email" required=""
+<!--            <label for="display_name" class="">{{ form.display_name.label_tag }}</label>-->
+            <input type="text" name="display_name" id="display_name" class="form-control mt-3" placeholder="Display name" required="">
+            <input type="email" name="email" id="email" class="form-control mt-1" placeholder="Email" required=""
                     {% if not request.GET.email %}autofocus=""{% endif %} value="{{ request.GET.email }}">
-            <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required="" {% if request.GET.email %}autofocus=""{% endif %}>
-            <label for="inputPassword" class="sr-only">Confirm password</label>
-            <input type="password" name="secondPassword" id="secondPassword" class="form-control" placeholder="Password" required="" {% if request.GET.email %}autofocus=""{% endif %}>
+            <input type="password" name="password" id="inputPassword" class="form-control mt-1" placeholder="Password" required="" minlength="6" maxlength="120" {% if request.GET.email %}autofocus=""{% endif %}>
+            <input type="password" name="repeat_password" id="secondPassword" class="form-control mt-1" placeholder="Repeat password"  minlength="6" maxlength="120" required="" {% if request.GET.email %}autofocus=""{% endif %}>
 <!--            <div class="checkbox mb-3">-->
 <!--                <label>-->
 <!--                    <input type="checkbox" value="remember-me"> Remember me-->
 <!--                </label>-->
 <!--            </div>-->
-            <button class="btn btn-lg btn-success btn-block" type="submit">Sign in</button>
+            {% if error_email %}
+            <small class="text-danger mt-2">{{error_email}}</small>
+            {% endif %}
+            {% if error_password %}
+            <small class="text-danger">{{error_password}}</small>
+            {% endif %}
+            <button class="btn btn-lg btn-success btn-block mt-3" type="submit">Register</button>
             {% if request.GET.code %}
             <input type="hidden" name="code" value="{{ request.GET.code}}">
             {% endif %}

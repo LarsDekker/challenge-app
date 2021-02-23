@@ -5,6 +5,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = [
     path('', views.home, name='challenge-home'),
     path('register', views.register, name='register'),
+    path('logout', views.logout, name='logout'),
     path('join', views.join, name='join-group'),
     path('challenge', views.challenge, name='challenge-match'),
     path('match/<int:match_id>', views.match),

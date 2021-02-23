@@ -3,7 +3,7 @@ from django.contrib.auth.models import User, Group
 from django.db.models import Max
 from django.shortcuts import render
 from challenge.models import JoinCode, Player
-from challenge.forms import JoinForm
+from challenge.forms import JoinForm, RegisterForm
 from challenge.forms import ChallengeForm
 from challenge.models import Match
 from django.http import HttpResponse, HttpResponseRedirect
@@ -108,6 +108,28 @@ def score(request):
     df.sort_values('score', inplace=True)
     return HttpResponse(df.to_json(), content_type='application/json')
 
+
 def register(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            if User.objects.filter(email=form.cleaned_data['email']).exists():
+                return render(request, 'registration/register.html', {'error_email': form.cleaned_data['email'] + " is already in use..."})
+            if form.cleaned_data['password'] != form.cleaned_data['repeat_password']:
+                return render(request, 'registration/register.html', {'error_password': "Doe even je best. Wachtwoorden zijn ongelijk..."})
+            user = User.objects.create_user(form.cleaned_data['display_name'], form.cleaned_data['email'], form.cleaned_data['password'])
+            if 'code' in request.GET:
+                code = JoinCode.objects.get(key=request.GET['code'])
+                if code is not None:
+                    user.groups.add(code.group)
+            return HttpResponseRedirect("/login?email=" + form.cleaned_data['email'])
+        else:
+            return render(request, 'registration/register.html',
+                          {'error_email': "Dikke schijt, er gaat een hele boel fout."})
     return render(request, 'registration/register.html')
-    pass
+
+
+@login_required
+def logout(request):
+    logout(request)
+    return HttpResponseRedirect('/login')
