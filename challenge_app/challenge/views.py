@@ -126,7 +126,7 @@ def register(request):
         else:
             return render(request, 'registration/register.html',
                           {'error_email': "Dikke schijt, er gaat een hele boel fout."})
-    return render(request, 'registration/register.html', {'error_email': "Hmmmmmmm"})
+    return render(request, 'registration/register.html')
 
 
 @login_required
