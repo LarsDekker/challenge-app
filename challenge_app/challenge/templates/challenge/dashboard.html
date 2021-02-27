@@ -9,7 +9,7 @@
         <a class="btn btn-success mb-4 text-center text-white w-100" href="{% url 'challenge-match' %}">Daag een
             deelnemer uit!</a>
         <div class="list-group list-group-flush border rounded mt-lg-0 mb-4">
-            <div class="list-group-item-action d-flex justify-content-between lh-condensed rounded pt-3 px-3">
+            <div class="list-group-item-action d-flex justify-content-between lh-condensed rounded p-3">
                 <strong>Planned</strong>
             </div>
             {% for match in planned %}
@@ -18,7 +18,7 @@
         </div>
 
         <div class="list-group list-group-flush border rounded mt-lg-0 mt-4">
-            <div class="list-group-item-action d-flex justify-content-between lh-condensed rounded pt-3 px-3">
+            <div class="list-group-item-action d-flex justify-content-between lh-condensed rounded p-3">
                 <strong>Played</strong>
             </div>
             {% for match in matches %}
