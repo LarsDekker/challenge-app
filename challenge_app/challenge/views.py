@@ -23,7 +23,7 @@ def home(request):
         return render(request, 'challenge/dashboard.html',
                       {
                           'matches': Match.objects.exclude(played_at=None).filter(
-                              group=request.user.player.active_group, cancelled_at=None),
+                              group=request.user.player.active_group, cancelled_at=None).order_by('-played_at'),
                           'planned': Match.objects.filter(played_at=None, cancelled_at=None,
                                                           group=request.user.player.active_group),
                       })
